@@ -18,10 +18,17 @@ namespace ICW2
         static void Main(string[] args)
         {
             String file = "../../Output/bezier.png";
-            Bitmap bm = new Bitmap(1500, 1500);
+            Bitmap bm = new Bitmap(500, 500);
 
             MPoint[] rnd = GetRandomBezierPoints(0, 500, 0, 500, 10);
-            DrawBezier(bm, rnd, DColor.White, 500, 500, true);
+            // www.cubic.org/docs/bezier.htm
+            MPoint[] test = new MPoint[] {
+                new MPoint (40, 100),
+                new MPoint (80, 20),
+                new MPoint (140, 180),
+                new MPoint (260, 100),
+            };
+            DrawBezier(bm, rnd, DColor.White, 0, 0, true);
 
             bm.Save(file, ImageFormat.Png);
         }
@@ -45,7 +52,7 @@ namespace ICW2
 
         static void DrawBezier(Bitmap bm, MPoint[] points, DColor c, int xOffset = 0, int yOffset = 0, bool drawAnchors = false)
         {
-            PolyLineSegment line = Bezier.GetBezierApproximation(points, 50000);
+            PolyLineSegment line = Bezier.GetBezierApproximation(points, 500 * points.Length);
 
             foreach (MPoint p in line.Points)
             {
