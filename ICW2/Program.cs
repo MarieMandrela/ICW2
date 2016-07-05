@@ -18,25 +18,34 @@ namespace ICW2
         static void Main(string[] args)
         {
             String file = "../../Output/bezier.png";
-            Bitmap bm = new Bitmap(1000, 1000);
+            Bitmap bm = new Bitmap(1500, 1500);
 
-            MPoint[] testPoints = new[] {
-                new MPoint(100, 50),
-                new MPoint(50, 200),
-                new MPoint(300, 100),
-                new MPoint(150, 100),
-                new MPoint(60, 400),
-                new MPoint(460, 160),
-                new MPoint(100, 50),
-            };
-            drawBezier(bm, testPoints, DColor.White, 250, 350, true);
+            MPoint[] rnd = GetRandomBezierPoints(0, 500, 0, 500, 10);
+            DrawBezier(bm, rnd, DColor.White, 500, 500, true);
 
             bm.Save(file, ImageFormat.Png);
         }
 
-        static void drawBezier(Bitmap bm, MPoint[] points, DColor c, int xOffset = 0, int yOffset = 0, bool drawAnchors = false)
+        static MPoint[] GetRandomBezierPoints(int MinX, int MaxX, int MinY, int MaxY, int num)
         {
-            PolyLineSegment line = Bezier.GetBezierApproximation(points, 1000);
+            MPoint[] points = new MPoint[num];
+            Random rnd = new Random();
+            int x;
+            int y;
+
+            for (int i = 0; i < num; i++)
+            {
+                x = (int)(rnd.NextDouble() * (MaxX - MinX) + MinX);
+                y = (int)(rnd.NextDouble() * (MaxY - MinY) + MinY);
+                points[i] = new MPoint(x, y);
+            }
+
+            return points;
+        }
+
+        static void DrawBezier(Bitmap bm, MPoint[] points, DColor c, int xOffset = 0, int yOffset = 0, bool drawAnchors = false)
+        {
+            PolyLineSegment line = Bezier.GetBezierApproximation(points, 50000);
 
             foreach (MPoint p in line.Points)
             {
@@ -50,7 +59,7 @@ namespace ICW2
         }
 
 
-        static void drawRandom(Bitmap bm, DColor c)
+        static void DrawRandom(Bitmap bm, DColor c)
         {
             Random rnd = new Random();
 
