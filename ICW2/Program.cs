@@ -18,67 +18,49 @@ namespace ICW2
         static void Main(string[] args)
         {
             String file = "../../Output/bezier.png";
-            Bitmap bm = new Bitmap(500, 500);
+            int width = 600;
+            int height = 600;
+            Bitmap bmp = new Bitmap(width, height);
+            FillImage(bmp, DColor.White);
 
-            MPoint[] rnd = GetRandomBezierPoints(0, 500, 0, 500, 10);
-            // www.cubic.org/docs/bezier.htm
-            MPoint[] test = new MPoint[] {
-                new MPoint (40, 100),
-                new MPoint (80, 20),
-                new MPoint (140, 180),
-                new MPoint (260, 100),
+            MPoint[] rnd = BezierShapes.GetRandom(-width / 3, width / 3, -height / 3, height / 3, 10);
+            MPoint[] test = BezierShapes.GetTestDeCasteljau();
+            MPoint[] circle = BezierShapes.GetCircle(height / 3);
+
+            double xOffset = width / 3 * 1.5;
+            double yOffset = height / 3 * 1.5;
+            MPoint[] border = new MPoint[] {
+                new MPoint (-width / 3, -height / 3),
+                new MPoint (-width / 3, height / 3),
+                new MPoint (width / 3, -height / 3),
+                new MPoint (width / 3, height / 3)
             };
-            DrawBezier(bm, rnd, DColor.White, 0, 0, true);
 
-            bm.Save(file, ImageFormat.Png);
+            PolyLineSegment line = Bezier.GetBezierApproximation(circle, 2000);
+
+            DrawPoints(bmp, line.Points.ToArray(), DColor.Black, xOffset, yOffset);
+            DrawPoints(bmp, circle, DColor.Red, xOffset, yOffset);
+            DrawPoints(bmp, border, DColor.Blue, xOffset, yOffset);
+
+            bmp.Save(file, ImageFormat.Png);
         }
 
-        static MPoint[] GetRandomBezierPoints(int MinX, int MaxX, int MinY, int MaxY, int num)
+        static void FillImage(Bitmap bmp, DColor c)
         {
-            MPoint[] points = new MPoint[num];
-            Random rnd = new Random();
-            int x;
-            int y;
-
-            for (int i = 0; i < num; i++)
+            for (int i = 0; i < bmp.Width; i++)
             {
-                x = (int)(rnd.NextDouble() * (MaxX - MinX) + MinX);
-                y = (int)(rnd.NextDouble() * (MaxY - MinY) + MinY);
-                points[i] = new MPoint(x, y);
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    bmp.SetPixel(i, j, c);
+                }
             }
-
-            return points;
         }
 
-        static void DrawBezier(Bitmap bm, MPoint[] points, DColor c, int xOffset = 0, int yOffset = 0, bool drawAnchors = false)
+        static void DrawPoints(Bitmap bmp, MPoint[] points, DColor c, double xOffset = .0, double yOffset = .0)
         {
-            PolyLineSegment line = Bezier.GetBezierApproximation(points, 500 * points.Length);
-
-            foreach (MPoint p in line.Points)
-            {
-                bm.SetPixel((int) p.X + xOffset, (int) p.Y + yOffset, c);
-            }
-
             foreach (MPoint p in points)
             {
-                bm.SetPixel((int)p.X + xOffset, (int)p.Y + yOffset, c);
-            }
-        }
-
-
-        static void DrawRandom(Bitmap bm, DColor c)
-        {
-            Random rnd = new Random();
-
-            for (int i = 0; i < bm.Width; i++)
-            {
-                for (int j = 0; j < bm.Height; j++)
-                {
-                    if (rnd.NextDouble() > 0.5)
-                    {
-                        bm.SetPixel(i, j, c);
-                    }
-                }
+                bmp.SetPixel((int)(p.X + xOffset), (int)(p.Y + yOffset), c);
             }
         }
     }
