@@ -10,7 +10,25 @@ namespace ICW2.Maths
 {
     static class Bezier
     {
-        
+        /// <summary>
+        /// Creates several splines from the give points.
+        /// Each has <paramref name="controlPoints"/> segments.
+        /// </summary>
+        /// <param name="controlPoints"></param>
+        /// <param name="outputSegmentCount"></param>
+        /// <returns></returns>
+        public static List<PolyLineSegment> GetBezierApproximationSplines(List<Point[]> controlPoints, int outputSegmentCount)
+        {
+            List<PolyLineSegment> segments = new List<PolyLineSegment>();
+
+            foreach (Point[] points in controlPoints)
+            {
+                PolyLineSegment segment = GetBezierApproximation(points, outputSegmentCount);
+                segments.Add(segment);
+            }
+
+            return segments;
+        }
 
         /// <summary>
         /// http://www.cubic.org/docs/bezier.htmb

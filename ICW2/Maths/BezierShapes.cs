@@ -52,27 +52,40 @@ namespace ICW2.Maths
         /// <param name="y"></param>
         /// <param name="radius"></param>
         /// <returns></returns>
-        public static Point[] GetCircle(double radius)
+        public static List<Point[]> GetCircle(double radius)
         {
             double c = C * radius;
-            Point[] circle = new Point[] {
+            List<Point[]> circle = new List<Point[]>();
+
+            Point[] c1 = new Point[] {
                     new Point (0, radius),
                     new Point (c, radius),
                     new Point (radius, c),
                     new Point (radius, 0),
+            };
+            Point[] c2 = new Point[] {
                     new Point (radius, 0),
                     new Point (radius, -c),
                     new Point (c, -radius),
                     new Point (0, -radius),
+            };
+            Point[] c3 = new Point[] {
                     new Point (0, -radius),
                     new Point (-c, -radius),
                     new Point (-radius, -c),
                     new Point (-radius, 0),
+            };
+            Point[] c4 = new Point[] {
                     new Point (-radius, 0),
                     new Point (-radius, c),
                     new Point (-c, radius),
                     new Point (0, radius)
             };
+
+            circle.Add(c1);
+            circle.Add(c2);
+            circle.Add(c3);
+            circle.Add(c4);
 
             return circle;
         }
