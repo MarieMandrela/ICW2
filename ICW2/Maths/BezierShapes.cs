@@ -8,12 +8,15 @@ using System.Windows;
 
 namespace ICW2.Maths
 {
-    static class BezierShapes
+    /// <summary>
+    /// Provides methods that return Bezier shapes as Bezier points.
+    /// </summary>
+    public static class BezierShapes
     {
-        public static double C = 0.551915024494;
+        private const double C = 0.551915024494;
 
         /// <summary>
-        /// http://www.cubic.org/docs/bezier.htm
+        /// Gets the points specified in http://www.cubic.org/docs/bezier.htm.
         /// </summary>
         /// <returns></returns>
         public static Point[] GetTestDeCasteljau()
@@ -28,6 +31,15 @@ namespace ICW2.Maths
             return test;
         }
 
+        /// <summary>
+        /// Gets <paramref name="num"/> random points between the given min and max.
+        /// </summary>
+        /// <param name="MinX"></param>
+        /// <param name="MaxX"></param>
+        /// <param name="MinY"></param>
+        /// <param name="MaxY"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
         public static Point[] GetRandom(int MinX, int MaxX, int MinY, int MaxY, int num)
         {
             Point[] points = new Point[num];
@@ -46,7 +58,8 @@ namespace ICW2.Maths
         }
 
         /// <summary>
-        /// http://spencermortensen.com/articles/bezier-circle/
+        /// Gets the points for four lines that approximate a circle with the radius <paramref name="radius"/>.
+        /// Taken from here: http://spencermortensen.com/articles/bezier-circle/
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>

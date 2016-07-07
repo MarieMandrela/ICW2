@@ -44,6 +44,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="Image\Painter.cs" />
     <Compile Include="Maths\Bezier.cs" />
     <Compile Include="Maths\BezierShapes.cs" />
     <Compile Include="Program.cs" />

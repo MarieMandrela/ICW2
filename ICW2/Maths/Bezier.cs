@@ -8,10 +8,13 @@ using System.Windows.Media;
 
 namespace ICW2.Maths
 {
-    static class Bezier
+    /// <summary>
+    /// Provides methods that generate Bezier lines from Bezier points. 
+    /// </summary>
+    public static class Bezier
     {
         /// <summary>
-        /// Creates several splines from the give points.
+        /// Creates several splines from the give <paramref name="controlPoints"/>.
         /// Each has <paramref name="controlPoints"/> segments.
         /// </summary>
         /// <param name="controlPoints"></param>
@@ -31,7 +34,9 @@ namespace ICW2.Maths
         }
 
         /// <summary>
-        /// http://www.cubic.org/docs/bezier.htmb
+        /// Approximated a Bezier line from the given <paramref name="controlPoints"/>. 
+        /// The resulting Bezier line will have <paramref name="outputSegmentCount"/> points.
+        /// Uses the DeCasteljau algorithm descibed in http://www.cubic.org/docs/bezier.htm.
         /// </summary>
         /// <param name="controlPoints"></param>
         /// <param name="outputSegmentCount"></param>
@@ -48,7 +53,7 @@ namespace ICW2.Maths
             return new PolyLineSegment(points, true);
         }
 
-        static Point GetBezierPoint(double t, Point[] controlPoints, int index, int count)
+        private static Point GetBezierPoint(double t, Point[] controlPoints, int index, int count)
         {
             if (count == 1)
             {

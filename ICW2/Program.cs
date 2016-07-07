@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ICW2.Maths;
+using ICW2.Image;
 
 using MPoint = System.Windows.Point;
 using DColor = System.Drawing.Color;
+
 
 namespace ICW2
 {
@@ -17,71 +19,28 @@ namespace ICW2
     {
         static void Main(string[] args)
         {
-            String file = "../../Output/bezier.png";
-            int width = 600;
-            int height = 600;
-            Bitmap bmp = new Bitmap(width, height);
-            FillImage(bmp, DColor.White);
+            String file = Constants.OutPath + "bezier.png";
+            Bitmap bmp = new Bitmap(Constants.OutWidth, Constants.OutHeight);
+            Painter.FillImage(bmp, DColor.White);
 
-            MPoint[] rnd = BezierShapes.GetRandom(-width / 3, width / 3, -height / 3, height / 3, 10);
-            List<MPoint[]> circle = BezierShapes.GetCircle(height / 3);
+            int thirdWidth = Constants.OutWidth / 3;
+            int thirdHeight = Constants.OutHeight / 3;
+            double xOffset = thirdWidth * 1.5;
+            double yOffset = thirdHeight * 1.5;
 
-            double xOffset = width / 3 * 1.5;
-            double yOffset = height / 3 * 1.5;
+            MPoint[] rnd = BezierShapes.GetRandom(-thirdWidth, thirdWidth, -thirdHeight, thirdHeight, 10);
+            List<MPoint[]> circle = BezierShapes.GetCircle(Math.Min(thirdHeight, thirdWidth));
 
             PolyLineSegment rndLine = Bezier.GetBezierApproximation(rnd, 2000);
-            List<PolyLineSegment> circleLine = Bezier.GetBezierApproximationSplines(circle, 500);
+            List<PolyLineSegment> circleLines = Bezier.GetBezierApproximationSplines(circle, 500);
 
-            DrawLines(bmp, circleLine, DColor.Red, xOffset, yOffset);
-            DrawLine(bmp, rndLine, DColor.Blue, xOffset, yOffset);
+            Painter.DrawLines(bmp, circleLines, DColor.Red, xOffset, yOffset);
+            Painter.DrawLine(bmp, rndLine, DColor.Blue, xOffset, yOffset);
 
-            DrawPoints(bmp, circle, DColor.Green, xOffset, xOffset);
-            DrawPoints(bmp, rnd, DColor.Orange, xOffset, yOffset);
+            Painter.DrawPoints(bmp, circle, DColor.Green, xOffset, xOffset);
+            Painter.DrawPoints(bmp, rnd, DColor.Orange, xOffset, yOffset);
 
             bmp.Save(file, ImageFormat.Png);
-        }
-
-        static void FillImage(Bitmap bmp, DColor c)
-        {
-            for (int i = 0; i < bmp.Width; i++)
-            {
-                for (int j = 0; j < bmp.Height; j++)
-                {
-                    bmp.SetPixel(i, j, c);
-                }
-            }
-        }
-
-        static void DrawPoints(Bitmap bmp, List<MPoint[]> points, DColor c, double xOffset = .0, double yOffset = .0)
-        {
-            foreach (MPoint[] plist in points)
-            {
-                DrawPoints(bmp, plist, c, xOffset, xOffset);
-            }
-        }
-
-        static void DrawPoints(Bitmap bmp, MPoint[] points, DColor c, double xOffset = .0, double yOffset = .0)
-        {
-            foreach (MPoint p in points)
-            {
-                bmp.SetPixel((int)(p.X + xOffset), (int)(p.Y + yOffset), c);
-            }
-        }
-
-        static void DrawLines(Bitmap bmp, List<PolyLineSegment> lines, DColor c, double xOffset = .0, double yOffset = .0)
-        {
-            foreach (PolyLineSegment plist in lines)
-            {
-                DrawLine(bmp, plist, c, xOffset, xOffset);
-            }
-        }
-
-        static void DrawLine(Bitmap bmp, PolyLineSegment line, DColor c, double xOffset = .0, double yOffset = .0)
-        {
-            foreach (MPoint p in line.Points)
-            {
-                bmp.SetPixel((int)(p.X + xOffset), (int)(p.Y + yOffset), c);
-            }
         }
     }
 }
