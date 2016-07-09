@@ -45,9 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
+    <Compile Include="Maths\Tridiagonal\ArrayUtil.cs" />
+    <Compile Include="Maths\Tridiagonal\CubicSpline.cs" />
     <Compile Include="Image\Painter.cs" />
-    <Compile Include="Maths\Bezier.cs" />
-    <Compile Include="Maths\BezierShapes.cs" />
+    <Compile Include="Maths\Tridiagonal\TShapes.cs" />
+    <Compile Include="Maths\Tridiagonal\TriDiagonalMatrix.cs" />
+    <Compile Include="Maths\Bezier\Bezier.cs" />
+    <Compile Include="Maths\Bezier\BShapes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

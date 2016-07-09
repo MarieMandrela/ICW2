@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace ICW2.Maths
+namespace ICW2.Maths.Bezier
 {
     /// <summary>
     /// Provides methods that return Bezier shapes as Bezier points.
     /// </summary>
-    public static class BezierShapes
+    public static class BShapes
     {
         private const double C = 0.551915024494;
 
