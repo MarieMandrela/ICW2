@@ -35,5 +35,26 @@ namespace ICW2.Maths.Tridiagonal
 
             return points;
         }
+
+        public static Point[] GetCircle(float radius, int pointCount)
+        {
+            float[] x = new float[5] {
+                0, radius, 0, -radius, 0
+            };
+            float[] y = new float[5] {
+                radius, 0, -radius, 0, radius
+            };
+
+            float[] xs, ys;
+            CubicSpline.FitParametric(x, y, pointCount, out xs, out ys);
+
+            Point[] points = new Point[pointCount];
+            for (int i = 0; i < pointCount; i++)
+            {
+                points[i] = new Point(xs[i], ys[i]);
+            }
+
+            return points;
+        }
     }
 }

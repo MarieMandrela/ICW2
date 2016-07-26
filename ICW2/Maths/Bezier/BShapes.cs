@@ -102,5 +102,44 @@ namespace ICW2.Maths.Bezier
 
             return circle;
         }
+
+        /// <summary>
+        /// Gets the points for four lines that approximate a circle with the radius <paramref name="radius"/>.
+        /// Uses <param name="n"/> splines, origin is <param name="ox"/>,<param name="oy"/>.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="radius"></param>
+        /// <returns></returns>
+        public static List<Point[]> GetCircle(double radius, int n, int ox, int oy)
+        {
+            Debug.Assert(n >= 4);
+
+            Point[] p;
+            double c = C * radius;
+            List<Point[]> circle = new List<Point[]>();
+            double x, y, xTo, yTo;
+            double steps = 2 * Math.PI / n;
+
+            for (int i = 0; i < n; i++)
+            {
+                int nextI = i + 1 % n;
+                x = ox + radius * Math.Cos(i * steps);
+                y = oy + radius * Math.Sin(i * steps);
+                xTo = ox + radius * Math.Cos(nextI * steps);
+                yTo = oy + radius * Math.Sin(nextI * steps);
+
+                p = new Point[] {
+                    new Point (x, y),
+                    new Point (-radius, c),
+                    new Point (-c, radius),
+                    new Point (xTo, yTo)
+                };
+
+                circle.Add(p);
+            }
+
+            return circle;
+        }
     }
 }
